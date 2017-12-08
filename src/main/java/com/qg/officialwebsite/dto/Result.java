@@ -10,16 +10,15 @@ import com.qg.officialwebsite.enums.StateEnum;
  * Description: 返回的结果类，含有状态码，状态码所代表的信息，返回的数据
  */
 public class Result<T> {
+
     /**
      * 状态码
      */
     private int state;
-
     /**
      * 状态信息
      */
     private String info;
-
     /**
      * 数据
      */

@@ -3,7 +3,6 @@ package com.qg.officialwebsite.advice;
 import com.qg.officialwebsite.domain.Student;
 import com.qg.officialwebsite.dto.Result;
 import com.qg.officialwebsite.exception.QGOfficialWebsiteException;
-import com.qg.officialwebsite.exception.RecruitException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
