@@ -4,6 +4,7 @@ import com.qg.officialwebsite.domain.Student;
 import com.qg.officialwebsite.dto.Result;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -72,5 +73,5 @@ public interface RecruitService {
      *
      * @return Result结果
      */
-    Result exportWordByStudentId(HttpServletResponse response) throws IOException, Docx4JException;
+    Result exportWord(HttpServletRequest request) throws IOException, Docx4JException;
 }

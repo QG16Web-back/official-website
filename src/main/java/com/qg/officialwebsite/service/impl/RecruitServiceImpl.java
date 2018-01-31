@@ -1,5 +1,6 @@
 package com.qg.officialwebsite.service.impl;
 
+import com.qg.officialwebsite.config.PortConfig;
 import com.qg.officialwebsite.domain.Student;
 import com.qg.officialwebsite.domain.StudentRepository;
 import com.qg.officialwebsite.dto.Result;
@@ -16,14 +17,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -209,7 +210,7 @@ public class RecruitServiceImpl implements RecruitService {
 	}
 
 	@Override
-	public Result exportWordByStudentId(HttpServletResponse response) throws IOException, Docx4JException {
+	public Result exportWord(HttpServletRequest request) throws IOException, Docx4JException {
 		// 文件名List
 		List<String> fileList = new ArrayList<>();
 		List<Student> students = studentRepository.findAll();
@@ -245,31 +246,30 @@ public class RecruitServiceImpl implements RecruitService {
             stringBuilder.append(student.getSwap() == NumberEnum.ONE.getNumber() ? "愿意服从调剂" : "不愿意服从调剂");
 			dataMap.put("wishAndSwap", stringBuilder.toString());
             // 导出Word文档
-			WordUtil.exportWord(dataMap, student.getStudentId() + ".docx");
-			fileList.add(SOURCE_PATH  + student.getStudentId() + ".docx");
+			WordUtil.exportWord(dataMap, request.getServletContext().getRealPath("/")  +student.getStudentId() + ".docx");
+			fileList.add(request.getServletContext().getRealPath("/")  + student.getStudentId() + ".docx");
 		}
 		// 合并Word文档
-		String mergeFilePath = SOURCE_PATH  + UUID.randomUUID().toString() + ".docx";
-		WordUtil.mergeDoc(fileList, mergeFilePath);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+		String wordName = simpleDateFormat.format(new Date()) + ".docx";
+		String mergeFilePath = request.getServletContext().getRealPath("/") + wordName;
 
-		// 把word发给前端
+		WordUtil.mergeDoc(fileList, mergeFilePath);
+		Map<String, String> data = new HashMap<>(1);
+		// 服务器IP
+		String ip = null;
 		try {
-			OutputStream out = response.getOutputStream();
-			InputStream in = new BufferedInputStream(new FileInputStream(mergeFilePath));
-			int temp;
-			while ((temp = in.read()) != -1) {
-				out.write(temp);
-			}
-			out.close();
-			in.close();
-		} catch (IOException e) {
+			ip = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+		data.put("link", "http://" + ip + ":" + PortConfig.getPort() + "/" + wordName);
+
 		// 删除子Word文档
 		for (String filename : fileList) {
 			new File(filename).delete();
 		}
-		new File(mergeFilePath).delete();
-		return new Result(StateEnum.OK);
+
+		return new Result<>(StateEnum.OK, data);
 	}
 }

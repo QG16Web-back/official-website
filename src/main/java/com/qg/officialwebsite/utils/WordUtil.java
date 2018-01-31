@@ -75,7 +75,7 @@ public class WordUtil {
 			}
 		}
 		// 保存文件
-		FileOutputStream outputStream = new FileOutputStream(SOURCE_PATH + exportFilePath);
+		FileOutputStream outputStream = new FileOutputStream(exportFilePath);
 		document.write(outputStream);
 		outputStream.close();
 	}

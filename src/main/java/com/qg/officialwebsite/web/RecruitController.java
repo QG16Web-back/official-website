@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
@@ -117,8 +117,8 @@ public class RecruitController {
      * @return Result结果
      */
     @RequestMapping(value = "/export", method = RequestMethod.POST, produces = "application/json")
-    public Result exportWord(HttpServletResponse response) throws IOException, Docx4JException {
-        return recruitService.exportWordByStudentId(response);
+    public Result exportWord(HttpServletRequest request) throws IOException, Docx4JException {
+        return recruitService.exportWord(request);
     }
 
     /**
@@ -135,5 +135,10 @@ public class RecruitController {
             throw new RecruitException(StateEnum.PARAM_IS_LOST);
         }
         return recruitService.selectByStudentId(map.get("studentId"));
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public void test(HttpServletRequest request) {
+        System.out.println(request.getServletPath());
     }
 }
