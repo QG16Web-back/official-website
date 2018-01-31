@@ -1,5 +1,11 @@
 package com.qg.officialwebsite.web;
 
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.qg.officialwebsite.annotation.RequestLimit;
 import com.qg.officialwebsite.domain.Student;
 import com.qg.officialwebsite.dto.Result;
 import com.qg.officialwebsite.enums.StateEnum;
@@ -13,10 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Map;
-
 /**
  * @author 郑俊铭
  * Date: 2017/12/2
@@ -26,7 +28,6 @@ import java.util.Map;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/recruit")
 public class RecruitController {
     private final RecruitServiceImpl recruitService;
 
@@ -73,6 +74,7 @@ public class RecruitController {
      * @param student 学生实体类
      * @return Result结果
      */
+    @RequestLimit(count = 10, time = 10000)
     @RequestMapping(value = "/enroll", method = RequestMethod.POST, produces = "application/json")
     public Result insertRegistrationInfo(@RequestBody Student student) {
         System.out.println(student);
@@ -135,10 +137,5 @@ public class RecruitController {
             throw new RecruitException(StateEnum.PARAM_IS_LOST);
         }
         return recruitService.selectByStudentId(map.get("studentId"));
-    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public void test(HttpServletRequest request) {
-        System.out.println(request.getServletPath());
     }
 }

@@ -1,6 +1,6 @@
 package com.qg.officialwebsite.service.impl;
 
-import com.qg.officialwebsite.config.PortConfig;
+
 import com.qg.officialwebsite.domain.Student;
 import com.qg.officialwebsite.domain.StudentRepository;
 import com.qg.officialwebsite.dto.Result;
@@ -15,21 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @author 郑俊铭
@@ -40,8 +35,6 @@ import java.util.UUID;
  */
 @Service
 public class RecruitServiceImpl implements RecruitService {
-	private static String path = Objects.requireNonNull(ClassUtils.getDefaultClassLoader().getResource("")).getPath();
-	private static final String SOURCE_PATH = path.substring(0, path.indexOf("target"));
 	private final StudentRepository studentRepository;
 
 	@Autowired
@@ -80,21 +73,17 @@ public class RecruitServiceImpl implements RecruitService {
 		int minimumScore = 0;
 		// 最大成绩
 		int maximumScore = 100;
-		// 年级的最大长度
-		int maximumGradeLength = 5;
 		// 专业班级的最大长度
 		int maximumClassLength = 20;
 		// C语言实验成绩最大长度
 		int maximumCTestScoreLength = 5;
 
-		if ("".equals(student.getName()) || "".equals(student.getStudentId()) || "".equals(student.getSex() + "")
-				|| "".equals(student.getGrade()) || "".equals(student.getaClass()) || "".equals(student.getPhone())
-				|| "".equals(student.getGpa() + "") || "".equals(student.getFail() + "")
+		if ("".equals(student.getName()) || "".equals(student.getStudentId()) || "".equals(student.getaClass())
+				|| "".equals(student.getPhone()) || "".equals(student.getGpa() + "") || "".equals(student.getFail() + "")
 				|| "".equals(student.getcScore() + "") || "".equals(student.getcTestScore())
 				|| "".equals(student.getEnScore() + "") || "".equals(student.getWish() + "")
 				|| "".equals(student.getSwap() + "") || student.getStudentId() == null || student.getName() == null
-				|| student.getGrade() == null || student.getaClass() == null || student.getPhone() == null
-				|| student.getcTestScore() == null) {
+				|| student.getaClass() == null || student.getPhone() == null || student.getcTestScore() == null) {
 			// 参数为空
 			throw new RecruitException(StateEnum.PARAM_IS_EMPTY);
 		} else if (student.getName().length() > maximumNameLength) {
@@ -106,13 +95,6 @@ public class RecruitServiceImpl implements RecruitService {
 		} else if (studentRepository.findByStudentId(student.getStudentId()) != null) {
 			// 该学生已经报名过，没法再次报名
 			throw new RecruitException(StateEnum.STUDENT_HAS_SIGN_UP);
-		} else if (!(student.getSex() == NumberEnum.ONE.getNumber()
-				|| student.getSex() == NumberEnum.ZERO.getNumber())) {
-			// 性别不对，主要是为了防止别人攻击
-			throw new RecruitException(StateEnum.SEX_ERROR);
-		} else if (student.getGrade().length() > maximumGradeLength) {
-			// 年级的长度超过8个字符
-			throw new RecruitException(StateEnum.GRADE_LENGTH_IS_TOO_LONG);
 		} else if (student.getaClass().length() > maximumClassLength) {
 			// 专业班级的长度超过20个字符
 			throw new RecruitException(StateEnum.CLASS_LENGTH_IS_TOO_LONG);
@@ -146,6 +128,20 @@ public class RecruitServiceImpl implements RecruitService {
 			throw new RecruitException(StateEnum.SWAP_ERROR);
 		} else {
 			// 一切正常
+			// 判断年级性别
+			if (student.getStudentId().startsWith("311600")) {
+				student.setSex(1);
+				student.setGrade("2016级");
+			} else if (student.getStudentId().startsWith("321600")) {
+				student.setSex(2);
+				student.setGrade("2016");
+			} else if (student.getStudentId().startsWith("311700")) {
+				student.setSex(1);
+				student.setGrade("2017级");
+			} else if (student.getStudentId().startsWith("321700")) {
+				student.setSex(2);
+				student.setGrade("2017级");
+			}
 			studentRepository.save(student);
 			return new Result(StateEnum.OK);
 		}
@@ -256,14 +252,8 @@ public class RecruitServiceImpl implements RecruitService {
 
 		WordUtil.mergeDoc(fileList, mergeFilePath);
 		Map<String, String> data = new HashMap<>(1);
-		// 服务器IP
-		String ip = null;
-		try {
-			ip = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		data.put("link", "http://" + ip + ":" + PortConfig.getPort() + "/" + wordName);
+
+		data.put("link", "/recruit/" + wordName);
 
 		// 删除子Word文档
 		for (String filename : fileList) {
