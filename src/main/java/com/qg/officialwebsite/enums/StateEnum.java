@@ -10,7 +10,7 @@ package com.qg.officialwebsite.enums;
 public enum StateEnum {
 
     /**
-     * 状态码、状态信息，学生已经报名过
+     * 状态码、状态信息
      */
     STUDENT_HAS_SIGN_UP(1, "学生已经报名过"),
 

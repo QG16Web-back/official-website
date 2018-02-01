@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * Description: 数据库以及Druid连接池配置Config
  */
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yml")
 public class DruidDBConfig {
 
     @Value("${spring.datasource.url}")
