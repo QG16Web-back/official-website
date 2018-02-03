@@ -28,7 +28,15 @@ public enum StateEnum {
     GPA_FORMAT_ERROR(15, "绩点格式错误"),
     DO_NOT_FIND_STUDENT(16, "没有找到该学生"),
     PARAM_IS_LOST(18, "缺失参数"),
-    OK(200, "一切正常");
+    OK(200, "一切正常"),
+
+    /**
+     * 官网状态码
+     */
+    AWARDNAME_LENGTH_IS_TOO_LONG(20, "奖项名称过长，超过200个字"),
+    PROJECT_LENGTH_IS_TO_LONG(21, "项目名称过长，超过120个字"),
+    PROJECTDETAIL_LENGTH_IS_TO_LONG(22, "项目描述过长，超过4000个字"),
+    AWARDID_OUT_OF_SIZE(23, "奖项id不在范围内");
 
     /**
      * 状态码
