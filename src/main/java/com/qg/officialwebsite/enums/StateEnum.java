@@ -33,10 +33,16 @@ public enum StateEnum {
     /**
      * 官网状态码
      */
-    AWARDNAME_LENGTH_IS_TOO_LONG(20, "奖项名称过长，超过200个字"),
-    PROJECT_LENGTH_IS_TO_LONG(21, "项目名称过长，超过120个字"),
-    PROJECTDETAIL_LENGTH_IS_TO_LONG(22, "项目描述过长，超过4000个字"),
-    AWARDID_OUT_OF_SIZE(23, "奖项id不在范围内");
+    AWARD_LENGTH_IS_TOO_LONG(20, "奖项名称过长，超过200个字"),
+    PROJECT_LENGTH_IS_TO_LONG(21, "项目名称过长，超过200个字"),
+    ID_OUT_OF_SIZE(23, "id不在范围内"),
+    PROJECT_IS_NOT_EXIST(24, "要删除的对象不存在"),
+    PAGE_OUT_OF_SIZE(25, "page不在范围内"),
+    TITLE_LENGTH_IS_TOO_LONG(26, "文章标题长度超出范围"),
+    BODY_LENGTH_IS_TO_LONG(27, "文章主体长度超出范围"),
+    ACHIEVEMENT_NOT_EXIST(28, "成就页面不存在"),
+    ACHIEVEMENT_CANNOT_REPEAT(29, "该页面已被占用，请换个页面添加")
+    ;
 
     /**
      * 状态码

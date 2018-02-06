@@ -1,10 +1,10 @@
 package com.qg.officialwebsite.web;
 
-import com.qg.officialwebsite.domain.Award;
+import com.qg.officialwebsite.domain.Project;
 import com.qg.officialwebsite.dto.Result;
 import com.qg.officialwebsite.enums.StateEnum;
 import com.qg.officialwebsite.exception.WebsiteHonorException;
-import com.qg.officialwebsite.service.impl.AwardServiceImpl;
+import com.qg.officialwebsite.service.impl.ProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,50 +12,50 @@ import java.util.Map;
 
 /**
  * Created by K Lin
- * Date: 2018/2/2.
- * Time: 21:06
+ * Date: 2018/2/6.
+ * Time: 20:23
  * Remember to sow in the spring.
  * Description : official-website
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/award")
-public class AwardController {
-    private final AwardServiceImpl awardService;
+@RequestMapping("/project")
+public class ProjectController {
+    private final ProjectServiceImpl projectService;
 
     @Autowired
-    public AwardController(AwardServiceImpl awardService){this.awardService = awardService;}
+    public ProjectController(ProjectServiceImpl projectService){this.projectService = projectService;}
+
     /**
-     * 添加奖项
-     * @param award
+     * 添加项目
+     * @param project
      * @return
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST, produces = "application/json")
-    public Result addAward(@RequestBody Award award){
-        System.out.println(award);
-        return awardService.addAward(award);
+    public Result addProject(@RequestBody Project project){
+        System.out.println(project);
+        return projectService.addProject(project);
     }
 
     /**
-     * 分页展示奖项
+     * 分页展示项目
      *
      * @param map 当前所在页数，pageSize一页的数量
      * @return Result结果
      */
     @RequestMapping(value = "/show", method = RequestMethod.POST, produces = "application/json")
     public Result showPagingAward(@RequestBody Map<String, Integer> map) {
-        System.out.println(map);
         String page = "page";
         String pageSize = "pageSize";
         if (!map.containsKey(page) || !map.containsKey(pageSize)) {
             // 参数缺失
             throw new WebsiteHonorException(StateEnum.PARAM_IS_LOST);
         }
-        return awardService.showPagingAward(map.get("page") - 1, map.get("pageSize"));
+        return projectService.showPagingProject(map.get("page") - 1, map.get("pageSize"));
     }
 
     /**
-     * 根据主键id删除奖项
+     * 根据主键id删除项目
      *
      * @param map
      * @return Result结果
@@ -67,6 +67,6 @@ public class AwardController {
             // 参数缺失
             throw new WebsiteHonorException(StateEnum.PARAM_IS_LOST);
         }
-        return awardService.deleteAwardById( map.get(id));
+        return projectService.deleteProjectById( map.get(id));
     }
 }

@@ -4,7 +4,7 @@ import com.qg.officialwebsite.domain.Award;
 import com.qg.officialwebsite.domain.AwardRepository;
 import com.qg.officialwebsite.dto.Result;
 import com.qg.officialwebsite.enums.StateEnum;
-import com.qg.officialwebsite.exception.QGOfficialWebsiteException;
+import com.qg.officialwebsite.exception.WebsiteHonorException;
 import com.qg.officialwebsite.service.AwardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,30 +38,23 @@ public class AwardServiceImpl implements AwardService{
         // 奖项名称的最大长度
         int maximumNameLength = 200;
         // 获奖项目名最大长度
-        int minimumProjectLength = 150;
-        // 项目描述最多字数
-//        int maximumDetailLength = 4000;
+        int minimumProjectLength = 200;
 
         if ("".equals(award.getTime()) || "".equals(award.getName()) || "".equals(award.getProject())
                 || "".equals(award.getAwardId()) || award.getTime() == null || award.getName() == null
                 || award.getProject() == null || award.getAwardId() == null) {
             // 参数为空
-            throw new QGOfficialWebsiteException(StateEnum.PARAM_IS_EMPTY);
+            throw new WebsiteHonorException(StateEnum.PARAM_IS_EMPTY);
         }else if (award.getAwardId() < minimumId || award.getAwardId() > maximumId) {
             // 奖项id不在范围之内
-            throw new QGOfficialWebsiteException(StateEnum.AWARDID_OUT_OF_SIZE);
+            throw new WebsiteHonorException(StateEnum.ID_OUT_OF_SIZE);
         } else if (award.getName().length() > maximumNameLength) {
             // 奖项名称过长，200个字为最大长度
-            throw new QGOfficialWebsiteException(StateEnum.AWARDNAME_LENGTH_IS_TOO_LONG);
+            throw new WebsiteHonorException(StateEnum.AWARD_LENGTH_IS_TOO_LONG);
         } else if (award.getProject().length() > minimumProjectLength) {
-            // 项目名称过长，150个字为最大长度
-            throw new QGOfficialWebsiteException(StateEnum.PROJECT_LENGTH_IS_TO_LONG);
+            // 项目名称过长，200个字为最大长度
+            throw new WebsiteHonorException(StateEnum.PROJECT_LENGTH_IS_TO_LONG);
         }
-//由奖项描述是否为必选决定，故保留注释
-//         else if (award.getDetail().length() > maximumDetailLength) {
-//            // 项目描述过长，4000个字为最大长度
-//            throw new RecruitException(StateEnum.PROJECTDETAIL_LENGTH_IS_TO_LONG);
-//        }
         else {
             // 一切正常
             awardRepository.save(award);
@@ -97,12 +90,13 @@ public class AwardServiceImpl implements AwardService{
     @Override
     public Result deleteAwardById(Integer id) {
         if (id == null) {
-            throw new QGOfficialWebsiteException(StateEnum.PARAM_IS_EMPTY);
+            throw new WebsiteHonorException(StateEnum.PARAM_IS_EMPTY);
         }
-        Award award = awardRepository.findById(id);
-        if (award != null) {
-            awardRepository.delete(award);
+        if (awardRepository.exists(id) == true) {
+            awardRepository.delete(id);
+            return new Result(StateEnum.OK);
+        }else {
+            throw new WebsiteHonorException(StateEnum.PROJECT_IS_NOT_EXIST);
         }
-        return new Result(StateEnum.OK);
     }
 }

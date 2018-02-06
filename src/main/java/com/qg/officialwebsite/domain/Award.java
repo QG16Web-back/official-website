@@ -45,18 +45,6 @@ public class Award {
     @Column(name = "time", nullable = false)
     private String time;
 
-    /**
-     * 获奖项目描述
-     */
-    @Column(name = "detail", nullable = false)
-    private String detail;
-
-    /**
-     * 获奖组别
-     */
-    @Column(name = "a_group", nullable = false)
-    private String group;
-
     public Award(){}
 
     public Award(Integer awardid, String name, String project, String time) {
@@ -106,22 +94,6 @@ public class Award {
         this.time = time;
     }
 
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
     @Override
     public String toString() {
         return "Award{" +
@@ -130,8 +102,6 @@ public class Award {
                 ", name='" + name + '\'' +
                 ", project='" + project + '\'' +
                 ", time='" + time + '\'' +
-                ", detail='" + detail + '\'' +
-                ", group='" + group + '\'' +
                 '}';
     }
 }
