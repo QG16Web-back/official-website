@@ -5,13 +5,13 @@ import com.qg.officialwebsite.enums.StateEnum;
 /**
  * @author 小铭
  * Date: 2018/2/6
- * Time: 11:01
+ * Time: 19:52
  * No struggle, talent how to match the willfulness.
- * Description: 参数为空异常类
+ * Description: 成员相关异常类
  */
-public class ParamEmptyException extends QGOfficialWebsiteException {
+public class MemberException extends QGOfficialWebsiteException {
 
-    public ParamEmptyException(StateEnum stateEnum) {
+    public MemberException(StateEnum stateEnum) {
         super(stateEnum);
     }
 }

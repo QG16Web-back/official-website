@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qg.officialwebsite.domain.MemberMapper" >
+    <select id="selectMemberByStudentId" parameterType="java.lang.String" resultType="com.qg.officialwebsite.domain.Member">
+        SELECT * FROM member WHERE student_id = #{studentId}
+    </select>
+    
+    <insert id="addMember" useGeneratedKeys="true" keyProperty="member.memberId" keyColumn="member_id" parameterType="com.qg.officialwebsite.domain.Member">
+        INSERT INTO member (member_name, student_id, member_photo_path, member_class, member_grade, motto, group_id, have_graduated, after_graduation)
+        VALUES (#{member.memberName}, #{member.studentId}, #{member.memberPhotoPath},
+                #{member.memberClass}, #{member.memberGrade}, #{member.motto},
+                #{member.group.groupId}, #{member.haveGraduated}, #{member.afterGraduation})
+    </insert>
+
+    <select id="showMember" parameterType="java.lang.String" resultMap="memberMap">
+
+    </select>
+</mapper>

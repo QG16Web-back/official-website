@@ -3,19 +3,22 @@ package com.qg.officialwebsite.web;
 import com.qg.officialwebsite.domain.Group;
 import com.qg.officialwebsite.domain.GroupMapper;
 import com.qg.officialwebsite.domain.Member;
-import com.qg.officialwebsite.domain.Prize;
+import com.qg.officialwebsite.domain.MemberMapper;
 import com.qg.officialwebsite.dto.Result;
+import com.qg.officialwebsite.enums.RegexEnum;
 import com.qg.officialwebsite.enums.StateEnum;
-import com.qg.officialwebsite.exception.FileFormatErrorException;
-import com.qg.officialwebsite.exception.ParamEmptyException;
-import com.qg.officialwebsite.exception.ParamLostException;
-import com.qg.officialwebsite.exception.QGOfficialWebsiteException;
+import com.qg.officialwebsite.exception.FileFormatException;
+import com.qg.officialwebsite.exception.GroupException;
+import com.qg.officialwebsite.exception.MemberException;
+import com.qg.officialwebsite.exception.ParamException;
+import com.qg.officialwebsite.exception.StudentIdFormatException;
 import com.qg.officialwebsite.service.impl.MemberServiceImpl;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,11 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author 小铭
@@ -47,11 +46,13 @@ public class MemberController {
 
     private final MemberServiceImpl memberService;
     private final GroupMapper groupMapper;
+    private final MemberMapper memberMapper;
 
     @Autowired
-    public MemberController(MemberServiceImpl memberService, GroupMapper groupMapper) {
+    public MemberController(MemberServiceImpl memberService, GroupMapper groupMapper, MemberMapper memberMapper) {
         this.memberService = memberService;
         this.groupMapper = groupMapper;
+        this.memberMapper = memberMapper;
     }
 
     /**
@@ -64,11 +65,10 @@ public class MemberController {
     public Result addMember(HttpServletRequest request, @RequestParam("memberPhoto") MultipartFile memberPhoto) {
         Map<String, String[]> map = request.getParameterMap();
 
-        if (!map.containsKey("memberName") || !map.containsKey("memberClass") || !map.containsKey("studentId") ||
-                !map.containsKey("memberGrade") || !map.containsKey("groupName") || !map.containsKey("prizeName")
-                || !map.containsKey("motto")) {
+        if (!map.containsKey("memberName") || !map.containsKey("memberClass") || !map.containsKey("studentId") || !map.containsKey("groupName")
+            || !map.containsKey("prizeName") || !map.containsKey("motto") || !map.containsKey("haveGraduated") || !map.containsKey("afterGraduation")) {
             logger.warn("参数缺失");
-            throw new ParamLostException(StateEnum.PARAM_IS_LOST);
+            throw new ParamException(StateEnum.PARAM_IS_LOST);
         }
 
         // 成员姓名
@@ -77,66 +77,73 @@ public class MemberController {
         String memberClass = request.getParameter("memberClass");
         // 学号
         String studentId = request.getParameter("studentId");
-        // 成员年级
-        String memberGrade = request.getParameter("memberGrade");
         // 成员组别
         String groupName = request.getParameter("groupName");
         // 成员所获奖项
         String prizeName = request.getParameter("prizeName");
         // 成员座右铭
         String motto = request.getParameter("motto");
+        // 成员是否毕业
+        String haveGraduated = request.getParameter("haveGraduated");
+        // 成员毕业去向
+        String afterGraduation = request.getParameter("afterGraduation");
+
+        if (!studentId.matches(RegexEnum.STUDENT_ID_REGEX.getRegex())) {
+            logger.warn("成员学号错误");
+            throw new StudentIdFormatException(StateEnum.STUDENT_ID_FORMAT_ERROR);
+        }
+
+        if (memberMapper.selectMemberByStudentId(studentId) != null) {
+            logger.warn("该成员学号已经存在");
+            throw new MemberException(StateEnum.MEMBER_HAS_EXISTED);
+        }
+
+        if (!("未毕业".equals(haveGraduated) || "已毕业".equals(haveGraduated))) {
+            logger.warn("毕业状态出错");
+            throw new MemberException(StateEnum.GRADUATED_STATUS_ERROR);
+        }
 
         Group group = groupMapper.selectGroupByGroupName(groupName);
         if (group == null) {
             logger.warn("组别不存在");
-            throw new ParamEmptyException(StateEnum.PARAM_IS_EMPTY);
+            throw new GroupException(StateEnum.GROUP_NOT_EXIST);
         }
 
-        if (memberName == null || "".equals(memberName) || studentId == null
-                || "".equals(studentId) || memberClass == null || "".equals(memberClass)
-                || memberGrade == null || "".equals(memberGrade) || motto ==
-                null || "".equals(motto)) {
+        if (memberName == null || "".equals(memberName) || memberClass == null || "".equals(memberClass) || "".equals(haveGraduated)) {
             logger.warn("参数为空");
-            throw new ParamEmptyException(StateEnum.PARAM_IS_EMPTY);
+            throw new ParamException(StateEnum.PARAM_IS_EMPTY);
         }
-        Member member = new Member(memberName, studentId, memberClass, memberGrade, motto, group);
+
+        Member member = new Member(memberName, studentId, memberClass, motto, group, haveGraduated, afterGraduation);
 
         if (!memberPhoto.isEmpty()) {
             String filename = memberPhoto.getOriginalFilename();
             try {
-                if (filename.endsWith(".jpg") || filename.endsWith(".JPG") ||
-                        filename.endsWith(".png") || filename.endsWith("PNG")) {
-                    // 换成以成员姓名命名
-                    filename = memberName + filename.substring(filename.length() - 4);
+                if (filename.endsWith(".jpg") || filename.endsWith(".JPG") || filename.endsWith(".png") || filename.endsWith("PNG")) {
+                    // 换成以成员学号命名
+                    filename = studentId + filename.substring(filename.length() - 4);
                     FileUtils.copyInputStreamToFile(memberPhoto.getInputStream(),
                             new File(request.getServletContext().getRealPath("/memberPhotos"), filename));
                     member.setMemberPhotoPath("/memberPhotos/" + filename);
                 } else {
                     logger.warn("文件格式错误");
                     // 文件格式错误
-                    throw new FileFormatErrorException(StateEnum.FILE_FORMAT_ERROR);
+                    throw new FileFormatException(StateEnum.FILE_FORMAT_ERROR);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        // 添加成员奖项
-        if (prizeName != null) {
-            String[] prizeArray = prizeName.split("#");
-            List<Prize> prizes = new ArrayList<>();
-            for (String prizeString : prizeArray) {
-                Prize prize = new Prize();
-                prize.setPrizeName(prizeString);
-                prizes.add(prize);
-            }
-            member.setPrizes(prizes);
+        return memberService.addMember(member, prizeName);
+    }
+
+    @RequestMapping(value = "/show", method = RequestMethod.POST, produces = "application/json")
+    public Result showMember(@RequestBody Map<String, String> map) {
+        System.out.println(map);
+        if (!map.containsKey("memberGrade") || !map.containsKey("groupName")) {
+            logger.warn("缺失参数");
+            throw new ParamException(StateEnum.PARAM_IS_LOST);
         }
-        System.out.println(member);
-        File file = new File(request.getServletContext().getRealPath("/") +
-                member
-                .getMemberPhotoPath());
-        boolean result = file.delete();
-        System.out.println(result);
-        return null;
+        return memberService.showMember(map.get("memberGrade"), map.get("groupName"));
     }
 }

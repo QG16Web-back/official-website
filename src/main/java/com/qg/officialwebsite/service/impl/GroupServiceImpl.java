@@ -5,7 +5,7 @@ import com.qg.officialwebsite.domain.GroupMapper;
 import com.qg.officialwebsite.dto.Result;
 import com.qg.officialwebsite.enums.StateEnum;
 import com.qg.officialwebsite.exception.GroupException;
-import com.qg.officialwebsite.exception.ParamEmptyException;
+import com.qg.officialwebsite.exception.ParamException;
 import com.qg.officialwebsite.service.GroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class GroupServiceImpl implements GroupService {
     public Result addGroup(Group group) {
         if (group.getGroupName() == null || "".equals(group.getGroupName())) {
             logger.warn("组别名参数为空");
-            throw new ParamEmptyException(StateEnum.PARAM_IS_EMPTY);
+            throw new ParamException(StateEnum.PARAM_IS_EMPTY);
         } else if (groupMapper.selectGroupByGroupName(group.getGroupName()) != null) {
             logger.warn("组别名已经存在");
             throw new GroupException(StateEnum.GROUP_HAS_EXISTED);
@@ -86,7 +86,7 @@ public class GroupServiceImpl implements GroupService {
         }
         if (group.getGroupName() == null || "".equals(group.getGroupName())) {
             logger.warn("组别名参数为空");
-            throw new ParamEmptyException(StateEnum.PARAM_IS_EMPTY);
+            throw new ParamException(StateEnum.PARAM_IS_EMPTY);
         }
         groupMapper.updateGroup(group);
         return new Result(StateEnum.OK);

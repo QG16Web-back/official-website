@@ -8,10 +8,10 @@ import java.util.List;
 
 /**
  * @author 小铭
- *         Date: 2018/2/5
- *         Time: 12:48
- *         No struggle, talent how to match the willfulness.
- *         Description:
+ * Date: 2018/2/5
+ * Time: 12:48
+ * No struggle, talent how to match the willfulness.
+ * Description: 组别操作mapper
  */
 
 @Mapper

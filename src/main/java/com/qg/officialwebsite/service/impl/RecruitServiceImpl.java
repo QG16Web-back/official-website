@@ -44,7 +44,7 @@ public class RecruitServiceImpl implements RecruitService {
 
 	@Override
 	public Result judgeStudentSignUpByStudentId(String studentId) {
-		if (!studentId.matches(RegexEnum.STUDENT_ID_REGEX.getRegex())) {
+		if (!studentId.matches(RegexEnum.STUDENT_ID_REGEX_FOR_RECRUIT.getRegex())) {
 			// 学号不匹配
 			throw new RecruitException(StateEnum.STUDENT_ID_FORMAT_ERROR);
 		} else if (studentRepository.findByStudentId(studentId) != null) {
@@ -89,7 +89,7 @@ public class RecruitServiceImpl implements RecruitService {
 		} else if (student.getName().length() > maximumNameLength) {
 			// 姓名长度过长，15个字为最大长度
 			throw new RecruitException(StateEnum.NAME_LENGTH_IS_TOO_LONG);
-		} else if (!student.getStudentId().matches(RegexEnum.STUDENT_ID_REGEX.getRegex())) {
+		} else if (!student.getStudentId().matches(RegexEnum.STUDENT_ID_REGEX_FOR_RECRUIT.getRegex())) {
 			// 学号格式错误或者年级不对
 			throw new RecruitException(StateEnum.STUDENT_ID_FORMAT_ERROR);
 		} else if (studentRepository.findByStudentId(student.getStudentId()) != null) {
@@ -190,7 +190,7 @@ public class RecruitServiceImpl implements RecruitService {
 		if ("".equals(studentId)) {
 			// 参数为空
 			throw new RecruitException(StateEnum.PARAM_IS_EMPTY);
-		} else if (!studentId.matches(RegexEnum.STUDENT_ID_REGEX.getRegex())) {
+		} else if (!studentId.matches(RegexEnum.STUDENT_ID_REGEX_FOR_RECRUIT.getRegex())) {
 			// 学号格式错误或者年级不对
 			throw new RecruitException(StateEnum.STUDENT_ID_FORMAT_ERROR);
 		} else {

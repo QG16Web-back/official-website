@@ -5,13 +5,13 @@ import com.qg.officialwebsite.enums.StateEnum;
 /**
  * @author 小铭
  * Date: 2018/2/5
- * Time: 19:12
+ * Time: 20:38
  * No struggle, talent how to match the willfulness.
- * Description: 参数缺失异常
+ * Description: 文件格式异常
  */
-public class ParamLostException extends QGOfficialWebsiteException {
+public class FileFormatException extends QGOfficialWebsiteException {
 
-    public ParamLostException(StateEnum stateEnum) {
+    public FileFormatException(StateEnum stateEnum) {
         super(stateEnum);
     }
 }

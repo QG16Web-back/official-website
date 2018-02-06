@@ -10,9 +10,14 @@ package com.qg.officialwebsite.enums;
 public enum RegexEnum {
 
     /**
-     * 学号的正则表达式
+     * 招新报名的学号的正则表达式
      */
-    STUDENT_ID_REGEX("^(3[1|2]1[6|7]00)\\d{4}$"),
+    STUDENT_ID_REGEX_FOR_RECRUIT("^(3[1|2]1[6|7]00)\\d{4}$"),
+
+    /**
+     * 成员学号正则表达式
+     */
+    STUDENT_ID_REGEX("^(3[1|2][0|1][0-9]00)\\d{4}$"),
 
     /**
      * 手机号码正则表达式

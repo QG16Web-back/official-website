@@ -3,7 +3,7 @@ package com.qg.officialwebsite.web;
 import com.qg.officialwebsite.domain.Group;
 import com.qg.officialwebsite.dto.Result;
 import com.qg.officialwebsite.enums.StateEnum;
-import com.qg.officialwebsite.exception.ParamLostException;
+import com.qg.officialwebsite.exception.ParamException;
 import com.qg.officialwebsite.service.impl.GroupServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class GroupController {
         System.out.println(map);
         if (!map.containsKey("groupId")) {
             logger.error("缺失参数");
-            throw new ParamLostException(StateEnum.PARAM_IS_LOST);
+            throw new ParamException(StateEnum.PARAM_IS_LOST);
         }
         return groupService.deleteGroup(map.get("groupId"));
     }

@@ -14,7 +14,7 @@ public enum StateEnum {
      */
     STUDENT_HAS_SIGN_UP(1, "学生已经报名过"),
 
-    STUDENT_ID_FORMAT_ERROR(3, "你的学号有点特别哦"),
+    STUDENT_ID_FORMAT_ERROR(3, "学号格式错误"),
 
     PHONE_FORMAT_ERROR(4, "你的手机号码肯定是外星的"),
 
@@ -47,6 +47,10 @@ public enum StateEnum {
     GROUP_NOT_EXIST(31, "组别不存在"),
 
     GROUP_HAS_EXISTED(32, "组别已存在"),
+
+    MEMBER_HAS_EXISTED(33, "成员已存在"),
+
+    GRADUATED_STATUS_ERROR(34, "是否毕业状态错误，应为\'未毕业\'或\'已毕业\'"),
 
     OK(200, "一切正常")
     ;

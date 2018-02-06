@@ -9,13 +9,12 @@ import java.util.List;
  * No struggle, talent how to match the willfulness.
  * Description: 成员实体类
  */
-
 public class Member {
 
     /**
      * 成员ID
      */
-    private Integer memberId;
+    private int memberId;
 
     /**
      * 成员姓名
@@ -70,29 +69,28 @@ public class Member {
     public Member() {
     }
 
-    public Member(String memberName, String studentId, String memberClass,
-                  String memberGrade, String
-                          motto, Group group) {
+    public Member(String memberName, String studentId, String memberClass, String motto, Group group, String haveGraduated,
+                  String afterGraduation) {
         this.memberName = memberName;
         this.studentId = studentId;
         this.memberClass = memberClass;
-        this.memberGrade = memberGrade;
         this.motto = motto;
         this.group = group;
+        this.haveGraduated = haveGraduated;
+        this.afterGraduation = afterGraduation;
     }
 
-    public Member(String memberName, String studentId, String
-            memberPhotoPath, String memberClass, String memberGrade, String
-            motto, Group group) {
-        this(memberName, studentId, memberClass, memberGrade, motto, group);
+    public Member(String memberName, String studentId, String memberPhotoPath, String memberClass, String motto, Group group, String haveGraduated,
+                  String afterGraduation) {
+        this(memberName, studentId, memberClass, motto, group, haveGraduated, afterGraduation);
         this.memberPhotoPath = memberPhotoPath;
     }
 
-    public Integer getMemberId() {
+    public int getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Integer memberId) {
+    public void setMemberId(int memberId) {
         this.memberId = memberId;
     }
 

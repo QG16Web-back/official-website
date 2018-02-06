@@ -29,6 +29,10 @@ spring:
   devtools:
     restart:
       enabled: true
+  http:
+    multipart:
+      max-file-size: 30Mb
+      max-request-size: 50MB
 
 # Mybatis
 mybatis:
