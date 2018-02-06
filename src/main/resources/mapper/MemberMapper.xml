@@ -13,6 +13,6 @@
     </insert>
 
     <select id="showMember" parameterType="java.lang.String" resultMap="memberMap">
-
+        
     </select>
 </mapper>
