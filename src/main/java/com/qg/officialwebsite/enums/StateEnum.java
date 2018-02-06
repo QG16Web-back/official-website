@@ -42,6 +42,12 @@ public enum StateEnum {
 
     PARAM_IS_LOST(18, "缺失参数"),
 
+    FILE_FORMAT_ERROR(30, "文件格式错误"),
+
+    GROUP_NOT_EXIST(31, "组别不存在"),
+
+    GROUP_HAS_EXISTED(32, "组别已存在"),
+
     OK(200, "一切正常")
     ;
 

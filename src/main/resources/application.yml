@@ -2,7 +2,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/recruit
+    url: jdbc:mysql://127.0.0.1:3306/qg_official_website
     username: root
     password: 970228
     type: com.alibaba.druid.pool.DruidDataSource
@@ -26,10 +26,19 @@ spring:
     database: mysql
   mvc:
     static-path-pattern: /**
+  devtools:
+    restart:
+      enabled: true
+
 # Mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.qg.officialwebsite.domain
+  configuration:
+    mapUnderscoreToCamelCase: true # 开启驼峰命名转换法
+    lazy-loading-enabled: true
+    use-generated-keys: true
+    aggressive-lazy-loading: false # 延迟加载
 
 # 分页
 pagehelper:

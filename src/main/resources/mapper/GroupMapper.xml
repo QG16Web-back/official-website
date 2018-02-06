@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qg.officialwebsite.domain.GroupMapper" >
+    <select id="selectGroupByGroupName"
+            resultType="com.qg.officialwebsite.domain.Group">
+        SELECT *
+        FROM qg_group
+        WHERE group_name = #{groupName}
+    </select>
+
+    <insert id="addGroup" parameterType="com.qg.officialwebsite.domain.Group">
+        INSERT INTO qg_group (group_name, group_description)
+        VALUES (#{group.groupName}, #{group.groupDescription})
+    </insert>
+
+    <select id="selectGroupById" parameterType="java.lang.Integer" resultType="com.qg.officialwebsite.domain.Group">
+        SELECT * FROM qg_group WHERE group_id = #{groupId}
+    </select>
+
+    <delete id="deleteGroupById" parameterType="java.lang.Integer">
+        DELETE FROM qg_group WHERE group_id = #{groupId}
+    </delete>
+
+    <update id="updateGroup" parameterType="com.qg.officialwebsite.domain.Group">
+        UPDATE qg_group SET group_name = #{group.groupName}, group_description = #{group.groupDescription}
+        WHERE group_id = #{group.groupId}
+    </update>
+
+    <select id="showGroups" resultMap="groupMap">
+        SELECT group_id, group_name, group_description FROM qg_group
+    </select>
+
+    <resultMap id="groupMap" type="com.qg.officialwebsite.domain.Group">
+        <id property="groupId" column="group_id"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupDescription" column="group_description"/>
+    </resultMap>
+
+</mapper>
