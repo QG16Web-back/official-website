@@ -17,20 +17,38 @@ import java.util.Map;
 public interface MemberService {
 
     /**
-     * 添加成员
-     *
-     * @param member 成员实体类
-     * @param prizeName 奖项字符串
-     * @return Result结果
-     */
-    Result addMember(Member member, String prizeName);
-
-    /**
-     * 显示成员（前端展示）
+     * 显示成员
      *
      * @param memberGrade 成员年级
      * @param groupName 组别名称
+     * @param isFrontEnd 是否是前端显示
      * @return Result结果
      */
-    Result showMember(String memberGrade, String groupName);
+    Result showMember(String memberGrade, String groupName, boolean isFrontEnd);
+
+    /**
+     * 修改或添加成员
+     *
+     * @param member 成员实体类
+     * @param prizeName 奖项字符串
+     * @param add 是否为添加新成员
+     * @return Result结果
+     */
+    Result addOrUpdateMember(Member member, String prizeName, boolean add);
+
+    /**
+     * 删除成员
+     *
+     * @param memberId 成员ID
+     * @return Result
+     */
+    Result deleteMember(Integer memberId);
+
+    /**
+     * 搜索成员
+     *
+     * @param studentId 学生ID
+     * @return Result结果
+     */
+    Result selectMember(String studentId);
 }

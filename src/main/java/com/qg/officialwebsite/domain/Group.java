@@ -14,7 +14,7 @@ public class Group {
     /**
      * 组别ID
      */
-    private Integer groupId;
+    private int groupId;
 
     /**
      * 组别名称
@@ -34,11 +34,11 @@ public class Group {
     public Group() {
     }
 
-    public Integer getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 

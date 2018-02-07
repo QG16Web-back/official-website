@@ -52,6 +52,10 @@ public enum StateEnum {
 
     GRADUATED_STATUS_ERROR(34, "是否毕业状态错误，应为\'未毕业\'或\'已毕业\'"),
 
+    GRADE_ERROR(35, "年级错误"),
+
+    MEMBER_NOT_EXIST(36, "成员不存在"),
+
     OK(200, "一切正常")
     ;
 

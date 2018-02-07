@@ -12,7 +12,7 @@ public class Prize {
     /**
      * 奖项ID
      */
-    private Integer prizeId;
+    private int prizeId;
 
     /**
      * 奖项名称
@@ -27,11 +27,11 @@ public class Prize {
     public Prize() {
     }
 
-    public Integer getPrizeId() {
+    public int getPrizeId() {
         return prizeId;
     }
 
-    public void setPrizeId(Integer prizeId) {
+    public void setPrizeId(int prizeId) {
         this.prizeId = prizeId;
     }
 

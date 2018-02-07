@@ -101,6 +101,7 @@ public class GroupServiceImpl implements GroupService {
     public Result showGroups() {
         List<Group> groups = groupMapper.showGroups();
         List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, List<Map<String, Object>>> groupMap = new HashMap<>(1);
         for (Group group : groups) {
             Map<String, Object> map = new HashMap<>(3);
             map.put("groupDescription", group.getGroupDescription());
@@ -108,6 +109,7 @@ public class GroupServiceImpl implements GroupService {
             map.put("groupId", group.getGroupId());
             list.add(map);
         }
-        return new Result<>(StateEnum.OK, list);
+        groupMap.put("groups", list);
+        return new Result<>(StateEnum.OK, groupMap);
     }
 }

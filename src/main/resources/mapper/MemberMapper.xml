@@ -2,9 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qg.officialwebsite.domain.MemberMapper" >
     <select id="selectMemberByStudentId" parameterType="java.lang.String" resultType="com.qg.officialwebsite.domain.Member">
-        SELECT * FROM member WHERE student_id = #{studentId}
+        SELECT
+            *
+        FROM member
+        WHERE student_id = #{studentId}
     </select>
     
+    <select id="selectMemberById" parameterType="java.lang.Integer" resultType="com.qg.officialwebsite.domain.Member">
+        SELECT
+            *
+        FROM member
+        WHERE member_id = #{memberId}
+    </select>
+
     <insert id="addMember" useGeneratedKeys="true" keyProperty="member.memberId" keyColumn="member_id" parameterType="com.qg.officialwebsite.domain.Member">
         INSERT INTO member (member_name, student_id, member_photo_path, member_class, member_grade, motto, group_id, have_graduated, after_graduation)
         VALUES (#{member.memberName}, #{member.studentId}, #{member.memberPhotoPath},
@@ -12,7 +22,59 @@
                 #{member.group.groupId}, #{member.haveGraduated}, #{member.afterGraduation})
     </insert>
 
+    <update id="updateMember" parameterType="com.qg.officialwebsite.domain.Member">
+      UPDATE
+          member
+      SET
+          member_name = #{member.memberName},
+          student_id =  #{member.studentId},
+          member_photo_path = #{member.memberPhotoPath},
+          member_class = #{member.memberClass},
+          member_grade = #{member.memberGrade},
+          motto = #{member.motto},
+          group_id = #{member.group.groupId},
+          have_graduated = #{member.haveGraduated},
+          after_graduation = #{member.afterGraduation}
+      WHERE member_id = #{member.memberId}
+    </update>
+
     <select id="showMember" parameterType="java.lang.String" resultMap="memberMap">
-        
+        SELECT
+            member.member_id,
+            member_name,
+            member_class,
+            member_grade,
+            student_id,
+            motto,
+            member_photo_path,
+            have_graduated,
+            after_graduation,
+            prize_id,
+            prize_name
+        FROM member, prize
+        WHERE member_grade = #{memberGrade}
+            AND member.group_id = (SELECT qg_group.group_id FROM qg_group WHERE group_name = #{groupName})
+            AND member.member_id = prize.member_id
     </select>
+    
+    <resultMap id="memberMap" type="com.qg.officialwebsite.domain.Member">
+        <id property="memberId" column="member_id"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberClass" column="member_class"/>
+        <result property="memberGrade" column="member_grade"/>
+        <result property="studentId" column="student_id"/>
+        <result property="motto" column="motto"/>
+        <result property="memberPhotoPath" column="member_photo_path"/>
+        <result property="haveGraduated" column="have_graduated"/>
+        <result property="afterGraduation" column="after_graduation"/>
+        <collection property="prizes" column="member_id" ofType="com.qg.officialwebsite.domain.Prize">
+            <result column="prize_name" property="prizeName"/>
+        </collection>
+    </resultMap>
+
+    <delete id="deleteMember" parameterType="java.lang.Integer">
+        DELETE
+        FROM member
+        WHERE member_id = #{memberId}
+    </delete>
 </mapper>
