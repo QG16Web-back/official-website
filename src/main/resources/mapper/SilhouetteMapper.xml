@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qg.officialwebsite.domain.SilhouetteMapper" >
+    <insert id="addSilhouette" parameterType="com.qg.officialwebsite.domain.Silhouette">
+        INSERT INTO silhouette
+            (
+                silhouette_description,
+                silhouette_type_id,
+                silhouette_path,
+                silhouette_time
+            )
+        VALUES
+            (
+                #{silhouette.silhouetteDescription},
+                #{silhouette.silhouetteType.silhouetteTypeId},
+                #{silhouette.silhouettePath},
+                #{silhouette.silhouetteTime}
+            )
+    </insert>
+
+    <select id="selectSilhouetteById" parameterType="java.lang.Integer">
+        SELECT *
+        FROM silhouette
+        WHERE silhouette_type_id = #{silhouetteTypeId}
+    </select>
+
+    <delete id="deleteSilhouette" parameterType="java.lang.Integer">
+        DELETE
+        FROM silhouette
+        WHERE silhouette_type_id = #{silhouetteTypeId}
+    </delete>
+    
+    <update id="updateSilhouette" parameterType="com.qg.officialwebsite.domain.Silhouette">
+        UPDATE silhouette
+        SET
+            silhouette_description = #{silhouette.silhouetteDescription},
+            silhouette_type_id = #{silhouette.silhouetteType.silhouetteTypeId},
+            silhouette_path = #{silhouette.silhouettePath},
+            silhouette_time = #{silhouette.silhouetteTime}
+        WHERE silhouette_id = #{silhouette.silhouetteId}
+    </update>
+
+    <select id="selectSilhouetteByTypeId" parameterType="java.lang.Integer" resultMap="silhouetteMap">
+        SELECT
+            silhouette_id,
+            silhouette_description,
+            silhouette_path,
+            silhouette_time
+        FROM silhouette 
+        WHERE silhouette_type_id = #{silhouetteTypeId}
+    </select>
+    <resultMap id="silhouetteMap" type="com.qg.officialwebsite.domain.Silhouette">
+        <id property="silhouetteId" column="silhouette_id"/>
+        <result property="silhouetteDescription" column="silhouette_description"/>
+        <result property="silhouettePath" column="silhouette_path"/>
+        <result property="silhouetteTime" column="silhouette_time"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qg.officialwebsite.domain.SilhouetteTypeMapper" >
+
+    <select id="selectTypeByName" parameterType="java.lang.String" resultType="com.qg.officialwebsite.domain.SilhouetteType">
+        SELECT *
+        FROM silhouette_type
+        WHERE silhouette_type_name = #{silhouetteTypeName}
+    </select>
+
+    <insert id="addSilhouetteType"
+            useGeneratedKeys="true"
+            keyProperty="silhouetteTypeId"
+            keyColumn="silhouette_type_id"
+            parameterType="com.qg.officialwebsite.domain.SilhouetteType">
+      INSERT INTO
+          silhouette_type
+          (silhouette_type_name)
+      VALUES
+          (#{silhouetteType.silhouetteTypeName})
+    </insert>
+    
+    <delete id="deleteSilhouetteTypeById" parameterType="java.lang.Integer">
+        DELETE
+        FROM silhouette_type
+        WHERE silhouette_type_id = #{silhouetteTypeId}
+    </delete>
+    
+    <select id="selectTypeById" parameterType="java.lang.Integer">
+        SELECT *
+        FROM silhouette_type
+        WHERE silhouette_type_id = #{silhouetteTypeId}
+    </select>
+
+    <update id="updateSilhouetteType" parameterType="com.qg.officialwebsite.domain.SilhouetteType">
+        UPDATE silhouette_type
+        SET
+            silhouette_type_name = #{silhouetteType.silhouetteTypeName}
+        WHERE silhouette_type_id = #{silhouetteType.silhouetteTypeId}
+    </update>
+    
+    <select id="showSilhouetteType" resultMap="silhouetteTypeMap">
+        SELECT
+            silhouette_type_id,
+            silhouette_type_name
+        FROM silhouette_type
+    </select>
+    
+    <resultMap id="silhouetteTypeMap" type="com.qg.officialwebsite.domain.SilhouetteType">
+        <id column="silhouette_type_id" property="silhouetteTypeId"/>
+        <result property="silhouetteTypeName" column="silhouette_type_name"/>
+    </resultMap>
+</mapper>

@@ -56,6 +56,14 @@ public enum StateEnum {
 
     MEMBER_NOT_EXIST(36, "成员不存在"),
 
+    SILHOUETTE_TYPE_HAS_EXISTED(37, "剪影类别已存在"),
+
+    SILHOUETTE_TYPE_NOT_EXIST(38, "剪影类别不存在"),
+
+    SILHOUETTE_HAS_EXISTED(39, "剪影已存在"),
+
+    SILHOUETTE_NOT_EXIST(40, "剪影不存在"),
+
     OK(200, "一切正常")
     ;
 

@@ -22,7 +22,7 @@ public class Silhouette {
     /**
      * 剪影类型
      */
-    private String silhouetteType;
+    private SilhouetteType silhouetteType;
 
     /**
      * 剪影路径
@@ -53,11 +53,11 @@ public class Silhouette {
         this.silhouetteDescription = silhouetteDescription;
     }
 
-    public String getSilhouetteType() {
+    public SilhouetteType getSilhouetteType() {
         return silhouetteType;
     }
 
-    public void setSilhouetteType(String silhouetteType) {
+    public void setSilhouetteType(SilhouetteType silhouetteType) {
         this.silhouetteType = silhouetteType;
     }
 
