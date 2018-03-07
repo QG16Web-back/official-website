@@ -28,7 +28,13 @@ public enum StateEnum {
     GPA_FORMAT_ERROR(15, "绩点格式错误"),
     DO_NOT_FIND_STUDENT(16, "没有找到该学生"),
     PARAM_IS_LOST(18, "缺失参数"),
-    OK(200, "一切正常");
+    OK(200, "一切正常"),
+
+
+    /**
+     * 新闻状态码
+     */
+    PAGE_NUM_ERROR(31,"分页参数出错");
 
     /**
      * 状态码
