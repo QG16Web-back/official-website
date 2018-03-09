@@ -139,4 +139,14 @@ public class RecruitController {
         }
         return recruitService.selectByStudentId(map.get("studentId"));
     }
+
+    @RequestMapping(value = "/sms" , method = RequestMethod.GET)
+    public List<Student> test(@Param("group") int group){
+        Result<List<Student>> result = recruitService.sendSmsToApp(group);
+        if (result.getData() == null) {
+            return result.getData();
+        }
+        Collections.sort(result.getData());
+        return result.getData();
+    }
 }
