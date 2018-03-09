@@ -6,6 +6,7 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author 郑俊铭
@@ -73,4 +74,6 @@ public interface RecruitService {
      * @return Result结果
      */
     Result exportWordByStudentId(HttpServletResponse response) throws IOException, Docx4JException;
+
+    Result<List<Student>> sendSmsToApp(int group);
 }

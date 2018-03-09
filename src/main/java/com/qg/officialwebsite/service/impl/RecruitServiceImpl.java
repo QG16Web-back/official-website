@@ -272,4 +272,26 @@ public class RecruitServiceImpl implements RecruitService {
 		new File(mergeFilePath).delete();
 		return new Result(StateEnum.OK);
 	}
+
+	@Override
+	public Result<List<Student>> sendSmsToApp(int group) {
+		Result<List<Student>> result ;
+		if (group < NumberEnum.ONE.getNumber() || group > NumberEnum.SEVEN.getNumber()){
+			result = new Result<List<Student>>(StateEnum.WISH_ERROR);
+			result.setInfo("传入组别错误");
+			return result;
+		}else {
+			List<Student> students = studentRepository.findByWish(group);
+			if (students == null){
+				result = new Result<List<Student>>(StateEnum.DO_NOT_FIND_STUDENT);
+				result.setInfo("没有找到这个组的学生");
+				return result;
+			}else {
+				result = new Result<List<Student>>(StateEnum.OK);
+				result.setData(students);
+				result.setInfo("Everything is OK");
+				return result;
+			}
+		}
+	}
 }

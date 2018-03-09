@@ -7,6 +7,7 @@ import com.qg.officialwebsite.exception.RecruitException;
 import com.qg.officialwebsite.service.impl.RecruitServiceImpl;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -135,5 +138,15 @@ public class RecruitController {
             throw new RecruitException(StateEnum.PARAM_IS_LOST);
         }
         return recruitService.selectByStudentId(map.get("studentId"));
+    }
+
+    @RequestMapping(value = "/sms" , method = RequestMethod.GET)
+    public List<Student> test(@Param("group") int group){
+        Result<List<Student>> result = recruitService.sendSmsToApp(group);
+        if (result.getData() == null) {
+            return result.getData();
+        }
+        Collections.sort(result.getData());
+        return result.getData();
     }
 }

@@ -2,6 +2,8 @@ package com.qg.officialwebsite.domain;
 
 
 import javax.persistence.*;
+import java.text.Collator;
+import java.util.Locale;
 
 /**
  * @author 郑俊铭
@@ -32,7 +34,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "student")
-public class Student {
+public class Student implements Comparable{
 
     /**
      * 主键
@@ -261,5 +263,19 @@ public class Student {
                 ", wish=" + wish +
                 ", swap=" + swap +
                 '}';
+    }
+
+    public Student(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if ( o instanceof Student){
+            return Collator.getInstance(Locale.CHINA).compare(this.name , ((Student) o).name);
+        }else {
+            return -1;
+        }
     }
 }
