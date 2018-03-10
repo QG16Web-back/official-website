@@ -24,7 +24,13 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
      */
     Student findByStudentId(@Param("studentId") String studentId);
 
-    @Query(value = "select new Student (t.name , t.phone) FROM Student t WHERE t.wish = :wish " +
+
+    /**
+     * 按小组查找学生
+     * @param group 组名代号
+     * @return
+     */
+    @Query(value = "select new Student (t.name , t.phone ,t.sex) FROM Student t WHERE t.wish = :wish " +
             "ORDER BY t.name")
     List<Student> findByWish(@Param("wish") int group);
 }

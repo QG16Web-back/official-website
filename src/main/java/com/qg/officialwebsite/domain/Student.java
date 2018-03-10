@@ -265,8 +265,9 @@ public class Student implements Comparable{
                 '}';
     }
 
-    public Student(String name, String phone) {
+    public Student(String name, String phone , int sex) {
         this.name = name;
+        this.sex = sex;
         this.phone = phone;
     }
 

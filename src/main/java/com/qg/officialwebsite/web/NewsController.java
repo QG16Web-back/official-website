@@ -19,12 +19,12 @@ import java.util.List;
 @RequestMapping("/news")
 public class NewsController {
 
-    @Autowired
-    private NewsServiceImpl newsService;
-
-    @RequestMapping("/show")
-    public News showNews(@Param("pageNum")int pageNum ,
-                                       @Param("pageSize") int pageSize){
-
-    }
+//    @Autowired
+//    private NewsServiceImpl newsService;
+//
+//    @RequestMapping("/show")
+//    public News showNews(@Param("pageNum")int pageNum ,
+//                                       @Param("pageSize") int pageSize){
+//        return null;
+//    }
 }

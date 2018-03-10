@@ -75,5 +75,10 @@ public interface RecruitService {
      */
     Result exportWordByStudentId(HttpServletResponse response) throws IOException, Docx4JException;
 
+    /**
+     * 返回学生信息，按组别查询
+     * @param group
+     * @return
+     */
     Result<List<Student>> sendSmsToApp(int group);
 }

@@ -15,6 +15,6 @@ import java.util.List;
  */
 @Repository
 public interface NewsRepository extends JpaRepository<News , Integer> {
-    @Query("SELECT t FROM news t ORDER BY t.newsTime DESC ")
-    List<News> findNewsOrOrderByNewsTime();
+//    @Query("SELECT t FROM news t ORDER BY t.newsTime DESC ")
+//    List<News> findNewsOrOrderByNewsTime();
 }

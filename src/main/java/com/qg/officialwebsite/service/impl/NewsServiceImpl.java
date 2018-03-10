@@ -36,5 +36,6 @@ public class NewsServiceImpl implements NewsService {
         }else {
             
         }
+        return null;
     }
 }
